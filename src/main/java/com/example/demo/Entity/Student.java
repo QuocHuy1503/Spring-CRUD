@@ -26,6 +26,8 @@ public class Student implements Serializable {
     @Column(nullable = false, name = "age")
     private int age;
 
-
+    @ManyToOne
+    @JoinColumn(name = "class_id", nullable = false)
+    private Classroom classroom; // This establishes the relationship
 
 }

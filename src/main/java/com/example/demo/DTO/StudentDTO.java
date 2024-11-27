@@ -17,9 +17,12 @@ public class StudentDTO implements Serializable {
     private Long id;
     private String name;
     private int age;
+    private Long classId; // Or ClassroomDTO classroom;
 
     public StudentDTO(Student student) {
-        this.age = student.getAge();
+        this.id = student.getId();
         this.name = student.getName();
+        this.age = student.getAge();
+        this.classId = student.getClassroom() != null ? student.getClassroom().getId() : null; // Get class_id
     }
 }

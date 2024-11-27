@@ -3,12 +3,10 @@ package com.example.demo.Controller;
 import com.example.demo.DTO.StudentDTO;
 import com.example.demo.Service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/students")
@@ -22,34 +20,48 @@ public class StudentController {
     }
 
     @GetMapping
-    public ResponseEntity<List<StudentDTO>> getAllStudents() {
-        List<StudentDTO> students = studentService.findAllStudents();
+    public ResponseEntity<Page<StudentDTO>> getAllStudents(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Page<StudentDTO> students = studentService.getStudents(page, size);
         return new ResponseEntity<>(students, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<StudentDTO> getStudentById(@PathVariable Long id) {
-        Optional<StudentDTO> student = studentService.findStudentById(id);
-        return student.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    public ResponseEntity<StudentDTO> getStudent(@PathVariable Long id) {
+        StudentDTO studentDTO = studentService.getStudent(id);
+        if (studentDTO != null) {
+            return new ResponseEntity<>(studentDTO, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping
     public ResponseEntity<StudentDTO> createStudent(@RequestBody StudentDTO studentDTO) {
-        StudentDTO createdStudent = studentService.saveStudent(studentDTO);
+        StudentDTO createdStudent = studentService.createStudent(studentDTO);
         return new ResponseEntity<>(createdStudent, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<StudentDTO> updateStudent(@PathVariable Long id, @RequestBody StudentDTO studentDTO) {
+    public ResponseEntity<StudentDTO> updateStudent(
+            @PathVariable Long id,
+            @RequestBody StudentDTO studentDTO) {
         StudentDTO updatedStudent = studentService.updateStudent(id, studentDTO);
-        return updatedStudent != null ? ResponseEntity.ok(updatedStudent) :
-                ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        if (updatedStudent != null) {
+            return new ResponseEntity<>(updatedStudent, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteStudent(@PathVariable Long id) {
-        studentService.deleteStudent(id);
-        return ResponseEntity.noContent().build();
+        try {
+            studentService.deleteStudent(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // Handle case where student is not found
+        }
     }
 }

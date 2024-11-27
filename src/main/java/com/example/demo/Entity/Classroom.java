@@ -2,7 +2,7 @@ package com.example.demo.Entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-
+import java.util.Set;
 @Data
 @Builder
 @Getter
@@ -20,4 +20,6 @@ public class Classroom {
     @Column(nullable = false, name = "name")
     private String name;
 
+    @OneToMany(mappedBy = "classroom")
+    private Set<Student> students; // This establishes the relationship
 }
