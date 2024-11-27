@@ -18,6 +18,7 @@ public class ClassroomDTO implements Serializable {
     private String name;
 
     public ClassroomDTO(Classroom classroom) {
+        this.id = classroom.getId();
         this.name = classroom.getName();
     }
 }
