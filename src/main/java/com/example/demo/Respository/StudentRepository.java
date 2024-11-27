@@ -14,6 +14,6 @@ public interface StudentRepository extends JpaRepository<Student,Long> {
     @Override
     Optional<Student> findById(Long aLong);
 
-    @Query("SELECT s FROM Student s WHERE s.classroom.id = :classId")
+    @Query("SELECT s FROM Student s JOIN FETCH s.classroom WHERE s.classroom.id = :classId")
     List<Student> findByClassroomId(@Param("classId") Long classId);
 }

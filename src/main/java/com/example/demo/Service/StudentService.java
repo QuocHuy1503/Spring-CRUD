@@ -1,6 +1,5 @@
 package com.example.demo.Service;
 
-import com.example.demo.DTO.ClassroomDTO;
 import com.example.demo.DTO.StudentDTO;
 import com.example.demo.Entity.Classroom;
 import com.example.demo.Entity.Student;
@@ -87,8 +86,9 @@ public class StudentService {
         }
     }
 
-    public List<StudentDTO> getStudentsByClassroomId(Long classId) {
-        List<Student> students = studentRepository.findByClassroomId(classId);
-        return students.stream().map(StudentDTO::new).collect(Collectors.toList());
-    }
+//    public List<StudentDTO> getStudentsByClassroomId(Long classId) {
+//        List<Student> students = studentRepository.findByClassroomId(classId);
+//        return students.stream().map(StudentDTO::new).collect(Collectors.toList());
+//    }
+
 }

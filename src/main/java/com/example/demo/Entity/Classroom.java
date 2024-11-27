@@ -10,7 +10,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="classes")
+@Table(name="class")
 public class Classroom {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,4 +22,6 @@ public class Classroom {
 
     @OneToMany(mappedBy = "classroom")
     private Set<Student> students; // This establishes the relationship
+
+    private Enum gender;
 }

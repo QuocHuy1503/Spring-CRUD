@@ -56,7 +56,12 @@ public class ClassroomController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteClassroom(@PathVariable Long id) {
-        classroomService.deleteClassroom(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        try {
+            classroomService.deleteClassroom(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // Handle case where student is not found
+        }
     }
+
 }
