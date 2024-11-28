@@ -41,8 +41,10 @@ public class StudentService {
         Student student = new Student();
         student.setName(studentDTO.getName());
         student.setAge(studentDTO.getAge());
+        student.setDOB(studentDTO.getDOB());
+        student.setExpel(studentDTO.isExpel());
+        student.setGender(studentDTO.getGender());
 
-        // Fetch the Classroom entity based on classId
         if (studentDTO.getClassId() != null) {
             Optional<Classroom> classroomOpt = classroomRepository.findById(studentDTO.getClassId());
             if (classroomOpt.isPresent()) {
@@ -62,8 +64,11 @@ public class StudentService {
             return null; // Or throw an exception
         }
         student.setName(studentDTO.getName());
-        student.setAge(studentDTO.getAge()); // Update age if provided
-
+        student.setAge(studentDTO.getAge());
+        student.setDOB(studentDTO.getDOB());
+        student.setExpel(studentDTO.isExpel());
+        student.setGender(studentDTO.getGender());
+        
         // Update classroom if classId is provided
         if (studentDTO.getClassId() != null) {
             Optional<Classroom> classroomOpt = classroomRepository.findById(studentDTO.getClassId());

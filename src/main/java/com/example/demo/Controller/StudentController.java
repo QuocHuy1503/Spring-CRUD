@@ -30,11 +30,9 @@ public class StudentController {
     @GetMapping("/{id}")
     public ResponseEntity<StudentDTO> getStudent(@PathVariable Long id) {
         StudentDTO studentDTO = studentService.getStudent(id);
-        if (studentDTO != null) {
-            return new ResponseEntity<>(studentDTO, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return studentDTO != null
+                ? new ResponseEntity<>(studentDTO, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PostMapping
@@ -48,11 +46,9 @@ public class StudentController {
             @PathVariable Long id,
             @RequestBody StudentDTO studentDTO) {
         StudentDTO updatedStudent = studentService.updateStudent(id, studentDTO);
-        if (updatedStudent != null) {
-            return new ResponseEntity<>(updatedStudent, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return updatedStudent != null
+                ? new ResponseEntity<>(updatedStudent, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping("/{id}")
@@ -61,7 +57,7 @@ public class StudentController {
             studentService.deleteStudent(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (RuntimeException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // Handle case where student is not found
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 }
